@@ -85,24 +85,6 @@ public class StickyValuesTable extends StickyTable<TVRowData> implements TableVa
 	}
 
 	/**
-	 * Class to wrap callback after column delete.
-	 *
-	 * @author laszlo.
-	 *
-	 */
-	private class ColumnDelete implements Runnable {
-
-		protected ColumnDelete() {
-			// non-synthetic constructor
-		}
-
-		@Override
-		public void run() {
-			onDeleteColumn();
-		}
-	}
-
-	/**
 	 * @param app  {@link AppW}
 	 * @param view to feed table with data.
 	 */
@@ -113,11 +95,18 @@ public class StickyValuesTable extends StickyTable<TVRowData> implements TableVa
 		this.dimensions = view.getTableValuesDimensions();
 		tableModel.registerListener(this);
 		reset();
+		addCellClickHandler((row, column, el) -> {
+			if (el != null && el.getParentNode() != null
+					&& el.getParentElement().hasClassName("MyToggleButton")) {
+				onHeaderClick(el, column);
+			} else if (row >= 0) {
+				tableModel.setCell(row, column);
+			}
+		});
 	}
 
-	@Override
-	protected void onHeaderClick(Element source, int column) {
-		new ContextMenuTV(app, column > 0 ? view.getGeoAt(column - 1) : null, column - 1)
+	private void onHeaderClick(Element source, int column) {
+		new ContextMenuTV(app, view, column > 0 ? view.getGeoAt(column - 1) : null, column - 1)
 				.show(source.getAbsoluteLeft(), source.getAbsoluteTop() - 8);
 	}
 
@@ -234,7 +223,7 @@ public class StickyValuesTable extends StickyTable<TVRowData> implements TableVa
 
 		header.addClassName("delete");
 
-		CSSEvents.runOnTransition(new ColumnDelete(), header, "delete");
+		CSSEvents.runOnTransition(this::onDeleteColumn, header, "delete");
 
 		for (int i = 0; i < elems.getLength(); i++) {
 			Element e = elems.getItem(i);

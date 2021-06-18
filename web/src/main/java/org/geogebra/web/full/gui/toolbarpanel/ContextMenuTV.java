@@ -5,7 +5,10 @@ import java.util.Map;
 
 import org.geogebra.common.gui.view.table.TableValuesPoints;
 import org.geogebra.common.gui.view.table.TableValuesView;
+import org.geogebra.common.kernel.Construction;
 import org.geogebra.common.kernel.geos.GeoElement;
+import org.geogebra.common.kernel.geos.GeoList;
+import org.geogebra.common.kernel.geos.GeoNumeric;
 import org.geogebra.common.kernel.kernelND.GeoEvaluatable;
 import org.geogebra.common.main.DialogManager;
 import org.geogebra.common.plugin.Event;
@@ -27,6 +30,7 @@ import com.google.gwt.user.client.Command;
  *
  */
 public class ContextMenuTV {
+	private final TableValuesView view;
 	/**
 	 * popup for the context menu
 	 */
@@ -46,8 +50,9 @@ public class ContextMenuTV {
 	 * @param column
 	 *            index of column
 	 */
-	public ContextMenuTV(AppW app, GeoElement geo, int column) {
+	public ContextMenuTV(AppW app, TableValuesView view, GeoElement geo, int column) {
 		this.app = app;
+		this.view = view;
 		this.columnIdx = column;
 		this.geo = geo;
 		buildGui();
@@ -94,6 +99,7 @@ public class ContextMenuTV {
 					dialogManager.openTableViewDialog(null);
 				}
 			});
+			addAdd();
 		}
 	}
 
@@ -153,6 +159,24 @@ public class ContextMenuTV {
 						app.getLocalization().getMenu("Edit")),
 				true, cmd);
 		addItem(mi, "edit");
+	}
+
+	private void addAdd() {
+		AriaMenuItem mi = new AriaMenuItem(
+				MainMenu.getMenuBarHtml(
+						(SVGResource) null,
+						app.getLocalization().getMenu("Add")),
+				true, () -> {
+			Construction construction = app.getKernel().getConstruction();
+			GeoList gl = new GeoList(construction);
+			for (int i = 0; i < 5; i++) {
+				gl.add(new GeoNumeric(construction, 3));
+			}
+			gl.setLabel(construction.getLabelManager()
+					.getNextNumberedLabel("y"));
+			view.showColumn(gl);
+		});
+		addItem(mi, "add");
 	}
 
 	/**

@@ -50,7 +50,7 @@ public interface TableValuesModel {
 	 */
 	String getHeaderAt(int column);
 
-	void setCell(Integer row, Integer column);
+	void setCell(int row, int column);
 
 	int getRealColumnCount();
 }

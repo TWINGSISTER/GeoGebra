@@ -1462,12 +1462,45 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 	 * @return localized number
 	 */
 	public String internationalizeDigits(String num, StringTemplate tpl) {
-
 		if (!tpl.internationalizeDigits()
 				|| !getLocalization().isUsingLocalizedDigits()) {
 			return num;
 		}
 
+		// make sure minus sign works in Arabic
+		boolean RTL = getLocalization().isRightToLeftDigits(tpl);
+
+		// RTL - swap order of mantissa and exponent
+		if (RTL && num.indexOf('E') > 0) {
+			String[] expNumbers = num.split("E");
+			String mantissa = moveMinusToRightIfNegative(expNumbers[0]);
+			String exponent = moveMinusToRightIfNegative(expNumbers[1]);
+
+			return localizeDigits(exponent) + "E" + localizeDigits(mantissa);
+		}
+
+		String localiszedNum = localizeDigits(num);
+
+		if (RTL) {
+			return moveMinusToRightIfNegative(localiszedNum);
+		}
+
+		return localiszedNum;
+
+	}
+
+	// remove minus from start (left) to end (right)
+	private String moveMinusToRightIfNegative(String num) {
+		Log.debug(num);
+		if (num.charAt(0) == '-') {
+			Log.debug("XXX" + num.substring(1) + "-");
+			return num.substring(1) + "-";
+		} else {
+			return num;
+		}
+	}
+
+	private String localizeDigits(String num) {
 		if (formatSB == null) {
 			formatSB = new StringBuilder(17);
 		} else {
@@ -1475,24 +1508,16 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 		}
 
 		boolean negative = num.charAt(0) == '-';
-
 		int start = 0;
 
-		// make sure minus sign works in Arabic
-		boolean RTL = getLocalization().isRightToLeftDigits(tpl);
-
-		if (RTL) {
-			formatSB.append(Unicode.RIGHT_TO_LEFT_MARK);
-			if (negative) {
-				formatSB.append(Unicode.RIGHT_TO_LEFT_UNARY_MINUS_SIGN);
-				start = 1;
-			}
+		if (negative) {
+			formatSB.append('-');
+			start = 1;
 		}
 
 		for (int i = start; i < num.length(); i++) {
 
-			char c = RTL ? num.charAt(num.length() - (negative ? 0 : 1) - i)
-					: num.charAt(i);
+			char c = num.charAt(i);
 			if (c == '.') {
 				c = getLocalization().getDecimalPoint();
 			} else if ((c >= '0') && (c <= '9')) {
@@ -1502,10 +1527,6 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 			}
 
 			formatSB.append(c);
-		}
-
-		if (RTL) {
-			formatSB.append(Unicode.RIGHT_TO_LEFT_MARK);
 		}
 
 		return formatSB.toString();

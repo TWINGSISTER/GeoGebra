@@ -14,7 +14,6 @@ import org.geogebra.web.full.gui.util.MyToggleButtonW;
 import org.geogebra.web.html5.gui.util.NoDragImage;
 import org.geogebra.web.html5.main.AppW;
 import org.geogebra.web.html5.util.CSSEvents;
-import org.geogebra.web.html5.util.Dom;
 import org.geogebra.web.html5.util.StickyTable;
 import org.geogebra.web.html5.util.TestHarness;
 
@@ -106,7 +105,7 @@ public class StickyValuesTable extends StickyTable<TVRowData> implements TableVa
 	}
 
 	private void onHeaderClick(Element source, int column) {
-		new ContextMenuTV(app, view, view.getGeoAt(column), column - 1)
+		new ContextMenuTV(app, view, view.getGeoAt(column), column)
 				.show(source.getAbsoluteLeft(), source.getAbsoluteTop() - 8);
 	}
 
@@ -307,16 +306,5 @@ public class StickyValuesTable extends StickyTable<TVRowData> implements TableVa
 	@Override
 	public void notifyDatasetChanged(TableValuesModel model) {
 		reset();
-	}
-
-	/**
-	 * @param column to get
-	 * @return the header element.
-	 */
-	private static Element getHeaderElement(int column) {
-		// gives the (column+1)th element of the header row.
-		NodeList<Element> list = Dom.querySelectorAll(
-				".values tr th:nth-child(" + (column + 1) + ") .cell");
-		return list != null ? list.getItem(0) : null;
 	}
 }

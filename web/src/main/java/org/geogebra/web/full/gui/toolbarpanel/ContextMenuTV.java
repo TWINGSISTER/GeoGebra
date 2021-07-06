@@ -81,8 +81,8 @@ public class ContextMenuTV {
 
 	private void buildGui() {
 		wrappedPopup = new GPopupMenuW(app);
-		if (getColumnIdx() >= 0) {
-			// column index >= 0 -> edit function
+		if (getColumnIdx() > 0) {
+			// column index > 0 -> edit function
 			addShowHide();
 			addEdit(() -> {
 				GuiManagerInterfaceW guiManager = getApp().getGuiManager();
@@ -92,7 +92,7 @@ public class ContextMenuTV {
 			});
 			addDelete();
 		} else {
-			// column index = -1 -> edit x-column
+			// column index = 0 -> edit x-column
 			addEdit(() -> {
 				DialogManager dialogManager = getApp().getDialogManager();
 				if (dialogManager != null) {
@@ -106,7 +106,7 @@ public class ContextMenuTV {
 	private void addShowHide() {
 		final TableValuesPoints tvPoints = getApp().getGuiManager()
 				.getTableValuesPoints();
-		final int column = getColumnIdx() + 1;
+		final int column = getColumnIdx();
 		String transKey = tvPoints.arePointsVisible(column) ? "HidePoints"
 				: "ShowPoints";
 		AriaMenuItem mi = new AriaMenuItem(

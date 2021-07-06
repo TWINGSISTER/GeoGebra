@@ -108,9 +108,7 @@ public class TableValuesView implements TableValues, SettingListener {
 
 	@Override
 	public int getColumn(GeoEvaluatable evaluatable) {
-		int index = model.getEvaluatableIndex(evaluatable);
-		index += index > -1 ? 1 : 0;
-		return index;
+		return model.getEvaluatableIndex(evaluatable);
 	}
 
 	@Override

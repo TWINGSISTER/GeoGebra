@@ -124,12 +124,23 @@ public abstract class StickyTable<T> extends FlowPanel {
 	}
 
 	/**
+	 * @param column to get
+	 * @return the header element.
+	 */
+	public static Element getHeaderElement(int column) {
+		// gives the columnth element of the header row. (nth-child is 1 indexed)
+		NodeList<Element> list = Dom.querySelectorAll(
+				".values tr th:nth-child(" + (column + 1) + ") .cell");
+		return list != null ? list.getItem(0) : null;
+	}
+
+	/**
 	 * @param column
 	 *            to get
 	 * @return the list of the specified value column elements (without the header).
 	 */
 	public static NodeList<Element> getColumnElements(int column) {
-		// gives the (column+1)th element of each row of the value table
+		// gives the columnth element of each row of the value table. (nth-child is 1 indexed)
 		return Dom.querySelectorAll(".values tr td:nth-child(" + (column + 1) + ") .cell");
 	}
 

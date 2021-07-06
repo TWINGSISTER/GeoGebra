@@ -137,11 +137,10 @@ class SimpleTableValuesModel implements TableValuesModel {
 				evaluatable.setTableColumn(-1);
 			}
 			columns.remove(index);
-			int column = index + 1;
 			for (int i = 0; i < columns.size(); i++) {
-				columns.get(i).setTableColumn(i + 1);
+				columns.get(i).setTableColumn(i);
 			}
-			notifyColumnRemoved(evaluatable, column);
+			notifyColumnRemoved(evaluatable, index);
 		}
 	}
 
@@ -203,7 +202,7 @@ class SimpleTableValuesModel implements TableValuesModel {
 		int index = getEvaluatableIndex(evaluatable);
 		if (index > -1) {
 			columns.get(index).updateHeaderName();
-			notifyColumnHeaderChanged(evaluatable, index + 1);
+			notifyColumnHeaderChanged(evaluatable, index);
 		}
 	}
 

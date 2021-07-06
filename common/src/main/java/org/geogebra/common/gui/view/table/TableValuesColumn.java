@@ -34,7 +34,7 @@ public class TableValuesColumn {
 		return evaluatable.getTableColumn();
 	}
 
-	public void setTableColumn(int tableColumn) {
+	void setTableColumn(int tableColumn) {
 		evaluatable.setTableColumn(tableColumn);
 	}
 
@@ -57,7 +57,7 @@ public class TableValuesColumn {
 		return value;
 	}
 
-	public void clearCache() {
+	void clearCache() {
 		doubleValues = new Double[xValues.size()];
 		stringValues = new String[xValues.size()];
 	}
@@ -75,7 +75,7 @@ public class TableValuesColumn {
 		headerName = evaluatable.isGeoList() ? labelSimple : labelSimple + "(x)";
 	}
 
-	public void setCell(int row) {
+	void setCell(int row) {
 		stringValues[row] = null;
 		doubleValues[row] = null;
 		GeoNumeric cell = (GeoNumeric) ((GeoList) evaluatable).get(row);

@@ -11,8 +11,8 @@ public class TableValuesColumn {
 	private final GeoList xValues;
 
 	private String headerName;
-	private final Double[] doubleValues;
-	private final String[] stringValues;
+	private Double[] doubleValues;
+	private String[] stringValues;
 
 	public TableValuesColumn(GeoEvaluatable evaluatable, GeoList xValues) {
 		this.evaluatable = evaluatable;
@@ -28,6 +28,14 @@ public class TableValuesColumn {
 
 	GeoEvaluatable getEvaluatable() {
 		return evaluatable;
+	}
+
+	int getTableColumn() {
+		return evaluatable.getTableColumn();
+	}
+
+	public void setTableColumn(int tableColumn) {
+		evaluatable.setTableColumn(tableColumn);
 	}
 
 	String getCellAt(int row) {
@@ -49,7 +57,16 @@ public class TableValuesColumn {
 		return value;
 	}
 
+	public void clearCache() {
+		doubleValues = new Double[xValues.size()];
+		stringValues = new String[xValues.size()];
+	}
+
 	String getHeaderName() {
+		if (headerName == null) {
+			updateHeaderName();
+		}
+
 		return headerName;
 	}
 

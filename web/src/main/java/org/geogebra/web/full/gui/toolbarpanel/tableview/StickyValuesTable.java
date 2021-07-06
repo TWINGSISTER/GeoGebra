@@ -106,7 +106,7 @@ public class StickyValuesTable extends StickyTable<TVRowData> implements TableVa
 	}
 
 	private void onHeaderClick(Element source, int column) {
-		new ContextMenuTV(app, view, column > 0 ? view.getGeoAt(column - 1) : null, column - 1)
+		new ContextMenuTV(app, view, view.getGeoAt(column), column - 1)
 				.show(source.getAbsoluteLeft(), source.getAbsoluteTop() - 8);
 	}
 

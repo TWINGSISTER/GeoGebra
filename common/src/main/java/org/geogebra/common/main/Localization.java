@@ -39,7 +39,7 @@ public abstract class Localization {
 	private StringBuilder sbOrdinal = new StringBuilder();
 	private boolean isAutoCompletePossible = true;
 	// For Persian and Arabic.
-	private boolean rightToLeftDigits = false;
+	private boolean isMinusOnRight = false;
 	/**
 	 * Use localized labels.
 	 */
@@ -913,11 +913,11 @@ public abstract class Localization {
 	 * @return whether current language uses RTL orientation for numbers for
 	 *         given template
 	 */
-	final public boolean isRightToLeftDigits(StringTemplate tpl) {
+	final public boolean isMinusOnRight(StringTemplate tpl) {
 		if (!tpl.internationalizeDigits()) {
 			return false;
 		}
-		return rightToLeftDigits;
+		return isMinusOnRight;
 	}
 
 	/**
@@ -946,7 +946,7 @@ public abstract class Localization {
 		// used for eg axes labels
 		// Arabic digits are RTL
 		// Persian aren't http://persian.nmelrc.org/persianword/format.htm
-		rightToLeftDigits = "ar".equals(lang);
+		isMinusOnRight = "ar".equals(lang);
 
 		// Another option:
 		// rightToLeftReadingOrder =

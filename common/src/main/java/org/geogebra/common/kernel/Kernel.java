@@ -1468,10 +1468,10 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 		}
 
 		// make sure minus sign works in Arabic
-		boolean RTL = getLocalization().isRightToLeftDigits(tpl);
+		boolean isMinusOnRight = getLocalization().isMinusOnRight(tpl);
 
 		// RTL - swap order of mantissa and exponent
-		if (RTL && num.indexOf('E') > 0) {
+		if (isMinusOnRight && num.indexOf('E') > 0) {
 			String[] expNumbers = num.split("E");
 			String mantissa = moveMinusToRightIfNegative(expNumbers[0]);
 			String exponent = moveMinusToRightIfNegative(expNumbers[1]);
@@ -1481,7 +1481,7 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 
 		String localiszedNum = localizeDigits(num);
 
-		if (RTL) {
+		if (isMinusOnRight) {
 			return moveMinusToRightIfNegative(localiszedNum);
 		}
 
@@ -2265,8 +2265,8 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 			}
 
 			if (forceDegrees || degreesMode()) {
-				boolean rtl = getLocalization().isRightToLeftDigits(tpl);
-				if (rtl) {
+				boolean isMinusOnRight = getLocalization().isMinusOnRight(tpl);
+				if (isMinusOnRight) {
 					if (tpl.hasCASType()) {
 						sbFormatAngle.append("pi/180*");
 					} else {
@@ -2295,7 +2295,7 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 					sbFormatAngle.append("*");
 				}
 
-				if (!rtl) {
+				if (!isMinusOnRight) {
 					if (tpl.hasCASType()) {
 						sbFormatAngle.append("*pi/180");
 					} else {

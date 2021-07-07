@@ -1467,10 +1467,10 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 			return num;
 		}
 
-		// make sure minus sign works in Arabic
+		// make sure minus sign is on right side
 		boolean isMinusOnRight = getLocalization().isMinusOnRight(tpl);
 
-		// RTL - swap order of mantissa and exponent
+		// instead of -12E-34 we have localized 34-E12-
 		if (isMinusOnRight && num.indexOf('E') > 0) {
 			String[] expNumbers = num.split("E");
 			String mantissa = moveMinusToRightIfNegative(expNumbers[0]);
@@ -1493,7 +1493,6 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 	private String moveMinusToRightIfNegative(String num) {
 		Log.debug(num);
 		if (num.charAt(0) == '-') {
-			Log.debug("XXX" + num.substring(1) + "-");
 			return num.substring(1) + "-";
 		} else {
 			return num;

@@ -1476,22 +1476,15 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 			String mantissa = moveMinusToRightIfNegative(expNumbers[0]);
 			String exponent = moveMinusToRightIfNegative(expNumbers[1]);
 
-			return localizeDigits(exponent) + "E" + localizeDigits(mantissa);
+			return localizeDigits(exponent, true) + "E" + localizeDigits(mantissa, true);
 		}
 
-		String localiszedNum = localizeDigits(num);
-
-		if (isMinusOnRight) {
-			return moveMinusToRightIfNegative(localiszedNum);
-		}
-
-		return localiszedNum;
+		return localizeDigits(num, isMinusOnRight);
 
 	}
 
 	// remove minus from start (left) to end (right)
 	private String moveMinusToRightIfNegative(String num) {
-		Log.debug(num);
 		if (num.charAt(0) == '-') {
 			return num.substring(1) + "-";
 		} else {
@@ -1499,7 +1492,7 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 		}
 	}
 
-	private String localizeDigits(String num) {
+	private String localizeDigits(String num, boolean isMinusOnRight) {
 		if (formatSB == null) {
 			formatSB = new StringBuilder(17);
 		} else {
@@ -1509,7 +1502,7 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 		boolean negative = num.charAt(0) == '-';
 		int start = 0;
 
-		if (negative) {
+		if (negative && !isMinusOnRight) {
 			formatSB.append('-');
 			start = 1;
 		}
@@ -1526,6 +1519,10 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 			}
 
 			formatSB.append(c);
+		}
+
+		if (isMinusOnRight) {
+			formatSB.append('-');
 		}
 
 		return formatSB.toString();
@@ -2266,11 +2263,7 @@ public class Kernel implements SpecialPointsListener, ConstructionStepper {
 			if (forceDegrees || degreesMode()) {
 				boolean isMinusOnRight = getLocalization().isMinusOnRight(tpl);
 				if (isMinusOnRight) {
-					if (tpl.hasCASType()) {
-						sbFormatAngle.append("pi/180*");
-					} else {
-						sbFormatAngle.append(Unicode.DEGREE_CHAR);
-					}
+					sbFormatAngle.append(Unicode.DEGREE_CHAR);
 				}
 
 				phi = Math.toDegrees(phi);

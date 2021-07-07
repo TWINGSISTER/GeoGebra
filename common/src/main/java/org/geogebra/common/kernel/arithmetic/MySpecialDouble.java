@@ -144,7 +144,7 @@ public class MySpecialDouble extends MyDouble {
 					return tpl.convertScientificNotation(strToString);
 				}
 				// keep original string
-				return kernel.format((getDouble()), tpl);
+				return strToString;
 			}
 			// format double value using kernel settings
 			return super.toString(tpl);

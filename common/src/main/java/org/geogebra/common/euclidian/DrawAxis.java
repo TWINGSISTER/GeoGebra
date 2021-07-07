@@ -1180,8 +1180,9 @@ public class DrawAxis {
 				&& !view.isAutomaticAxesNumberingDistance()[axis]
 				&& view.getAxesDistanceObjects()[axis].getDefinition() != null
 				&& view.getAxesDistanceObjects()[axis].getDouble() > 0) {
-			return multiple(view.getAxesDistanceObjects()[axis].getDefinition(),
-					labelno);
+			return labelno == 1 ? view.getApplication().getKernel()
+					.format(labelno, StringTemplate.defaultTemplate)
+				:multiple(view.getAxesDistanceObjects()[axis].getDefinition(), labelno);
 		}
 		return view.kernel.formatPiE(
 				DoubleUtil.checkDecimalFraction(

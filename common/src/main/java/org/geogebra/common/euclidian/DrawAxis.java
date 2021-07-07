@@ -1182,7 +1182,7 @@ public class DrawAxis {
 				&& view.getAxesDistanceObjects()[axis].getDouble() > 0) {
 			return labelno == 1 ? view.getApplication().getKernel()
 					.format(labelno, StringTemplate.defaultTemplate)
-				:multiple(view.getAxesDistanceObjects()[axis].getDefinition(), labelno);
+				: multiple(view.getAxesDistanceObjects()[axis].getDefinition(), labelno);
 		}
 		return view.kernel.formatPiE(
 				DoubleUtil.checkDecimalFraction(

@@ -699,6 +699,6 @@ public class AppletParameters {
 	 * @return whether to localize point names
 	 */
 	public boolean getParamUseLocalizedPointNames() {
-		return getBoolDataParam("useLocalizedPointNames", false);
+		return getBoolDataParam("useLocalizedPointNames", true);
 	}
 }
